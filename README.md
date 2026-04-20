@@ -47,7 +47,6 @@ Si estás interesado en mi perfil o quieres colaborar en algún proyecto, ¡habl
 
 * **Email:** [nicolascabelloalonso@gmail.com](mailto:nicolascabelloalonso@gmail.com)
 * **Teléfono:** 665 32 58 61
-* **Ubicación:** Toledo, España
 
 ---
 *Hecho con ❤️ por Nicolás Cabello Alonso*
