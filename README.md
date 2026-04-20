@@ -41,14 +41,6 @@ Sistema de minería de datos capaz de predecir el valor residual de vehículos c
 
 ---
 
-## 📈 Estadísticas de GitHub
-
-<p align="left">
-  <img src="https://github-readme-stats.vercel.app/api?username=TuUsuarioGitHub&show_icons=true&theme=radical" alt="Estadísticas de GitHub" />
-</p>
-
----
-
 ## 📫 Contacto
 
 Si estás interesado en mi perfil o quieres colaborar en algún proyecto, ¡hablemos!
