@@ -1,0 +1,133 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    font-family: 'Inter', sans-serif;
+    background-color: #09090b;
+    color: #ffffff;
+    scroll-behavior: smooth;
+    font-size: 16px;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Space Grotesk', sans-serif;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: #09090b;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 3px;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    background: #4ade80;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 8px rgba(74, 222, 128, 0.3); }
+  50% { box-shadow: 0 0 20px rgba(74, 222, 128, 0.6); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.7s ease forwards;
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.6s ease forwards;
+}
+
+.animate-pulseGlow {
+  animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+.in-view {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.in-view.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.gradient-text {
+  background: linear-gradient(135deg, #4ade80, #22c55e, #86efac);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: gradientShift 4s ease infinite;
+}
+
+.glow-border {
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.glow-border:hover {
+  border-color: rgba(74, 222, 128, 0.7);
+  box-shadow: 0 0 20px rgba(74, 222, 128, 0.15);
+}
+
+.grid-bg {
+  background-image: 
+    linear-gradient(rgba(74, 222, 128, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74, 222, 128, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
