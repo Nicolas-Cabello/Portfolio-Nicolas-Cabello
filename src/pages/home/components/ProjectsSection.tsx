@@ -133,7 +133,13 @@ const ProjectCard = ({ project, delay }: { project: ProjectData; delay: number }
           : { transitionDelay: `${delay}s` }
       }
     >
-      <article className="bg-[#111113] rounded-xl overflow-hidden glow-border group transition-all duration-300 hover:-translate-y-1 cursor-pointer">
+      <article 
+        className="bg-[#111113] rounded-xl overflow-hidden glow-border group transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+        onClick={() => {
+          const targetUrl = project.liveUrl || project.githubUrl;
+          window.open(targetUrl, '_blank', 'noopener,noreferrer');
+        }}
+      >
         <div className="relative h-52 overflow-hidden">
           <img
             src={project.image}
@@ -187,6 +193,7 @@ const ProjectCard = ({ project, delay }: { project: ProjectData; delay: number }
               rel="noopener noreferrer nofollow"
               className="flex items-center gap-2 text-zinc-400 hover:text-green-400 text-sm transition-colors duration-200 cursor-pointer whitespace-nowrap"
               aria-label={`Ver código de ${t(project.titleKey)} en GitHub`}
+              onClick={(e) => e.stopPropagation()}
             >
               <i className="ri-github-fill" />
               {t('proj_btn_repo')}
@@ -200,6 +207,7 @@ const ProjectCard = ({ project, delay }: { project: ProjectData; delay: number }
                   rel="noopener noreferrer nofollow"
                   className="flex items-center gap-2 text-zinc-400 hover:text-green-400 text-sm transition-colors duration-200 cursor-pointer whitespace-nowrap"
                   aria-label={`Ver demo de ${t(project.titleKey)}`}
+                  onClick={(e) => e.stopPropagation()}
                 >
                   <i className="ri-external-link-line" />
                   {t('proj_btn_live')}
