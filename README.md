@@ -1,94 +1,52 @@
-# Portfolio Personal
+# 🚀 Mi Portfolio Personal | Nicolás Cabello Alonso
 
-Un portfolio web moderno y responsivo desarrollado con React, TypeScript y Tailwind CSS, con soporte para internacionalización.
+¡Bienvenido a mi espacio digital! Este repositorio contiene el código de mi portfolio profesional, donde muestro mis proyectos, habilidades técnicas y mi trayectoria en el mundo de la tecnología.
 
-## 🚀 Características
+**🔗 [Visita mi Portfolio en Vivo](https://portfolio-nicolas-cabello-alonso.vercel.app/) | [Repositorio GitHub](https://github.com/Nicolas-Cabello/Portfolio-Nicolas-Cabello)**
 
-- **React 19** con TypeScript
-- **Tailwind CSS** para estilos modernos
-- **React Router** para navegación
-- **i18next** para internacionalización (Español/Inglés)
-- **Vite** para desarrollo rápido
-- **ESLint** para calidad de código
-- **Diseño responsivo** con mobile-first
+---
 
-## 🛠️ Tecnologías
+## 👨‍💻 Sobre mí
 
-- ![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-- ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-- ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
-- ![Vite](https://img.shields.io/badge/Vite-B73BFE?style=for-the-badge&logo=vite&logoColor=FFD62E)
+Soy un apasionado de la infraestructura de sistemas y el análisis de datos. Mi formación combina la **Administración de Sistemas Informáticos en Red (ASIR)** con la especialización en **IA y Big Data**. Me enfoco en crear soluciones seguras, escalables e inteligentes.
 
-## 📁 Estructura del Proyecto
+## 🛠️ Stack Tecnológico
 
-```
-src/
-├── components/          # Componentes reutilizables
-├── pages/              # Páginas de la aplicación
-│   └── home/           # Página principal
-│       └── components/ # Secciones del portfolio
-├── hooks/              # Hooks personalizados
-├── i18n/               # Configuración de internacionalización
-│   └── local/          # Traducciones
-├── router/             # Configuración de rutas
-├── App.tsx             # Componente principal
-└── main.tsx            # Punto de entrada
-```
+### **Infraestructura y Seguridad**
+* **Servicios:** OpenLDAP, Kerberos, DNSSEC (Unbound), SSSD.
+* **Sistemas:** Administración avanzada de Linux (Ubuntu Server/Desktop).
+* **Virtualización:** VMware Workstation, VirtualBox.
 
-## 🚀 Instalación y Uso
+### **IA & Big Data**
+* **Análisis de Datos:** Modelos de Regresión, Árboles de Decisión, Random Forest.
+* **IA Conversacional:** Diseño de UX para Chatbots y flujos complejos.
+* **Lenguajes:** Python (Scikit-learn, Pandas, OpenCV).
 
-### Prerrequisitos
+### **Desarrollo Web**
+* **Frontend:** React, Next.js, Tailwind CSS.
+* **Despliegue:** Vercel.
 
-- Node.js (v18 o superior)
-- npm o yarn
+---
 
-### Instalación
+## 📂 Proyectos Destacados
 
-```bash
-# Clonar el repositorio
-git clone <URL_DEL_REPOSITORIO>
-cd portfolio
+### 🤖 [Chatbot Correos Express](https://chatbot-correos-express-kh5p3n1xu-nicolas-cabellos-projects.vercel.app/)
+Asistente virtual inteligente diseñado para la gestión de envíos, con lógica de reparación de errores y diseño empático de UX.
 
-# Instalar dependencias
-npm install
+### 🛡️ [Sistema de Autenticación Segura](https://github.com/tu-usuario/nombre-repo)
+Infraestructura de red centralizada que integra autenticación biométrica (Howdy), Kerberos y OpenLDAP para máxima seguridad.
 
-# Iniciar servidor de desarrollo
-npm run dev
+### 📊 [Análisis del Mercado Automotriz](https://github.com/tu-usuario/nombre-repo)
+Sistema de minería de datos capaz de predecir el valor residual de vehículos con un 91.6% de precisión utilizando Machine Learning.
 
-# Construir para producción
-npm run build
+---
 
-# Previsualizar producción
-npm run preview
-```
+## 📫 Contacto
 
-## 📝 Scripts Disponibles
+Si estás interesado en mi perfil o quieres colaborar en algún proyecto, ¡hablemos!
 
-- `npm run dev` - Inicia servidor de desarrollo
-- `npm run build` - Construye la aplicación para producción
-- `npm run preview` - Previsualiza la aplicación en modo producción
-- `npm run lint` - Ejecuta ESLint para revisar el código
-- `npm run type-check` - Verifica tipos TypeScript
+* **Email:** [nicolascabelloalonso@gmail.com](mailto:nicolascabelloalonso@gmail.com)
+* **Teléfono:** 665 32 58 61
 
-## 🌐 Internacionalización
-
-El portfolio soporta español e inglés. El idioma se detecta automáticamente del navegador o puede ser cambiado manualmente.
-
-## 📱 Secciones del Portfolio
-
-- **Hero** - Presentación principal
-- **About** - Información personal
-- **Skills** - Habilidades técnicas
-- **Experience** - Experiencia laboral
-- **Projects** - Proyectos destacados
-- **Curriculum** - Descarga de CV
-- **Contact** - Formulario de contacto
-- **Footer** - Información adicional
-
-## 🤝 Contribuciones
-
-Las contribuciones son bienvenidas. Por favor, abre un issue para discutir cambios mayores antes de hacer un pull request.
-
-## 📄 Licencia
-
-Este proyecto está bajo la Licencia MIT.
+---
+*Hecho con ❤️ por Nicolás Cabello Alonso*
