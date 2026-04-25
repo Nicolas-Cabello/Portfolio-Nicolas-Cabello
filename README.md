@@ -48,7 +48,7 @@ Aplicación web revolucionaria que permite chatear con archivos CSV usando intel
 
 Si estás interesado en mi perfil o quieres colaborar en algún proyecto, ¡hablemos!
 
-* **Email:** [nicolas.cabello.alonso@gmail.com](mailto:nicolas.cabello.alonso@gmail.com)
+* **Email:** [nicolascabelloalonso@gmail.com](mailto:nicolascabelloalonso@gmail.com)
 * **Teléfono:** 665 32 58 61
 
 ---
