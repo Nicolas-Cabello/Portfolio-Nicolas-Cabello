@@ -1,15 +1,15 @@
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 const HeroSection = () => {
   const { t } = useTranslation();
 
-  const TITLES = useMemo(() => [
+  const TITLES = [
     t('hero_title0'),
     t('hero_title1'),
     t('hero_title2'),
     t('hero_title3'),
-  ], [t]);
+  ];
 
   const [titleIndex, setTitleIndex] = useState(0);
   const [displayed, setDisplayed] = useState('');
