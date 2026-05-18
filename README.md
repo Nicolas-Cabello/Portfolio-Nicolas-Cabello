@@ -30,17 +30,23 @@ Soy un apasionado de la infraestructura de sistemas y el análisis de datos. Mi 
 
 ## 📂 Proyectos Destacados
 
-### 🤖 [Chatbot Correos Express](https://chatbot-correos-express-kh5p3n1xu-nicolas-cabellos-projects.vercel.app/)
-Asistente virtual inteligente diseñado para la gestión de envíos, con lógica de reparación de errores y diseño empático de UX.
+### 💇‍♂️ [AISTETIC — Recomendador de Estilismo IA](https://github.com/Nicolas-Cabello/AISTETIC)
+Aplicación web inteligente que analiza automáticamente los rasgos faciales a partir de una foto o captura de cámara para recomendar cortes de pelo y peinados, utilizando 4 redes neuronales secuenciales en TensorFlow y una arquitectura FastAPI + React.
 
-### 🛡️ [Sistema de Autenticación Segura](https://github.com/Nicolas-Cabello/Sistema-de-Seguridad-2FA-y-biometrico-en-Linux)
-Infraestructura de red centralizada que integra autenticación biométrica (Howdy), Kerberos y OpenLDAP para máxima seguridad.
+### 🌾 [Análisis Inteligente del Sector Agropecuario](https://github.com/Nicolas-Cabello/An-lisis-Sector-Agropecuario)
+Flujo completo de KDD (Knowledge Discovery in Databases) para el análisis, integración de datos y modelado predictivo del sector agropecuario global con 6 modelos predictivos entrenados (DNN, Random Forest, Autoencoders, LSTMs) y visualización ejecutiva en Power BI.
+
+### 🛡️ [Sistema de Seguridad 2FA y Biométrico en Linux](https://github.com/Nicolas-Cabello/Sistema-de-Seguridad-2FA-y-biometrico-en-Linux)
+Infraestructura centralizada de autenticación en dos pasos con reconocimiento biométrico y políticas PAM en entornos Linux, reforzando la seguridad de sistemas críticos.
+
+### 📈 [AnaliticaData — Análisis con IA](https://analitica-data.vercel.app/)
+Aplicación web revolucionaria que permite chatear con archivos CSV usando inteligencia artificial, generando visualizaciones y análisis automáticos para facilitar la toma de decisiones.
 
 ### 📊 [Análisis del Mercado Automotriz](https://github.com/Nicolas-Cabello/Analisis-Mercado-Automocion)
-Sistema de minería de datos capaz de predecir el valor residual de vehículos con un 91.6% de precisión utilizando Machine Learning.
+Sistema de minería de datos capaz de predecir el valor de vehículos en España con un 91.6% de precisión utilizando algoritmos de Machine Learning como XGBoost y Random Forest.
 
-### 📈 [AnaliticaData - Análisis con IA](https://analitica-data.vercel.app/)
-Aplicación web revolucionaria que permite chatear con archivos CSV usando inteligencia artificial, generando visualizaciones y análisis automáticos para facilitar la toma de decisiones.
+### 🤖 [Chatbot Correos Express](https://chatbot-correos-express-kh5p3n1xu-nicolas-cabellos-projects.vercel.app/)
+Asistente virtual interactivo diseñado para el seguimiento en tiempo real y simulación de envíos, desplegado en Vercel con flujos conversacionales dinámicos.
 
 ---
 
