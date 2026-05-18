@@ -48,7 +48,7 @@ const ProjectsSection = () => {
       iconColor: 'text-emerald-400',
       highlightKeys: ['proj6_h1', 'proj6_h2', 'proj6_h3', 'proj6_h4'],
       tags: ['Python', 'PyTorch', 'TensorFlow', 'Power BI', 'KDD'],
-      githubUrl: 'https://github.com/Nicolas-Cabello/An-lisis-Sector-Agropecuario',
+      githubUrl: 'https://github.com/Nicolas-Cabello/Analisis-Sector-Agropecuario',
       liveUrl: '',
     },
     {
