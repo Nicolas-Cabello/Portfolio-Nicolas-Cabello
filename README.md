@@ -33,7 +33,7 @@ Soy un apasionado de la infraestructura de sistemas y el análisis de datos. Mi 
 ### 💇‍♂️ [AISTETIC — Recomendador de Estilismo IA](https://github.com/Nicolas-Cabello/AISTETIC)
 Aplicación web inteligente que analiza automáticamente los rasgos faciales a partir de una foto o captura de cámara para recomendar cortes de pelo y peinados, utilizando 4 redes neuronales secuenciales en TensorFlow y una arquitectura FastAPI + React.
 
-### 🌾 [Análisis Inteligente del Sector Agropecuario](https://github.com/Nicolas-Cabello/An-lisis-Sector-Agropecuario)
+### 🌾 [Análisis Inteligente del Sector Agropecuario](https://github.com/Nicolas-Cabello/Analisis-Sector-Agropecuario)
 Flujo completo de KDD (Knowledge Discovery in Databases) para el análisis, integración de datos y modelado predictivo del sector agropecuario global con 6 modelos predictivos entrenados (DNN, Random Forest, Autoencoders, LSTMs) y visualización ejecutiva en Power BI.
 
 ### 🛡️ [Sistema de Seguridad 2FA y Biométrico en Linux](https://github.com/Nicolas-Cabello/Sistema-de-Seguridad-2FA-y-biometrico-en-Linux)
