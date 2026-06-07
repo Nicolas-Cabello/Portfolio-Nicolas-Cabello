@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import useInView from '../../../hooks/useInView';
 
-const CV_URL = 'https://drive.google.com/file/d/19p6cQ9fNO90SOvuYYkSXKopCUvqdppF5/view?usp=sharing';
-const CV_DOWNLOAD_URL = 'https://drive.google.com/uc?export=download&id=19p6cQ9fNO90SOvuYYkSXKopCUvqdppF5';
+const CV_URL = 'https://drive.google.com/file/d/16O5ippFClTS_O0RCSuVKLz6bROF2_F4c/view?usp=sharing';
+const CV_DOWNLOAD_URL = 'https://drive.usercontent.google.com/u/0/uc?id=16O5ippFClTS_O0RCSuVKLz6bROF2_F4c&export=download';
 
 const CurriculumSection = () => {
   const { t } = useTranslation();
