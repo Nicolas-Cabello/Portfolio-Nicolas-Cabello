@@ -30,6 +30,9 @@ Soy un apasionado de la infraestructura de sistemas y el análisis de datos. Mi 
 
 ## 📂 Proyectos Destacados
 
+### 📏 [MetriCut — Presupuestos de Mecanizado CNC](https://github.com/Nicolas-Cabello/Metricut)
+Aplicación de escritorio para la generación de presupuestos de mecanizado CNC. Permite calcular costes de fabricación a partir de las dimensiones de una pieza, el material seleccionado y la máquina a utilizar, analizando modelos 3D e importando planos PDF para exportar presupuestos profesionales de forma automatizada.
+
 ### 💇‍♂️ [AISTETIC — Recomendador de Estilismo IA](https://github.com/Nicolas-Cabello/AISTETIC)
 Aplicación web inteligente que analiza automáticamente los rasgos faciales a partir de una foto o captura de cámara para recomendar cortes de pelo y peinados, utilizando 4 redes neuronales secuenciales en TensorFlow y una arquitectura FastAPI + React.
 

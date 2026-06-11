@@ -13,8 +13,9 @@ const SkillsSection = () => {
       barColor: '#4ade80',
       skills: [
         { name: 'Python', level: 90, descKey: 's1_d1' },
+        { name: 'JavaScript (React / Vite)', level: 75, descKey: 's1_d4' },
+        { name: 'SQL', level: 80, descKey: 's1_d3' },
         { name: 'Bash / Shell', level: 80, descKey: 's1_d2' },
-        { name: 'SQL', level: 75, descKey: 's1_d3' },
       ],
     },
     {

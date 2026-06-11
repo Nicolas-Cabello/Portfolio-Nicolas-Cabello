@@ -15,12 +15,29 @@ interface ProjectData {
   tags: string[];
   githubUrl: string;
   liveUrl: string;
+  downloadUrl?: string;
 }
 
 const ProjectsSection = () => {
   const { t } = useTranslation();
 
   const projects: ProjectData[] = [
+    {
+      id: 'p7',
+      titleKey: 'proj7_title',
+      descKey: 'proj7_desc',
+      badgeKey: 'proj7_badge',
+      badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
+      image: '/images/metricut.png',
+      icon: 'ri-computer-line',
+      iconBg: 'bg-emerald-500/10',
+      iconColor: 'text-emerald-400',
+      highlightKeys: ['proj7_h1', 'proj7_h2', 'proj7_h3', 'proj7_h4'],
+      tags: ['React', 'Electron', 'FastAPI', 'Python', 'Three.js'],
+      githubUrl: 'https://github.com/Nicolas-Cabello/Metricut',
+      liveUrl: '',
+      downloadUrl: 'https://drive.google.com/file/d/1TG8ChzQCM1zl0ZTSJszB-99iaxEURPwe/view?usp=sharing',
+    },
     {
       id: 'p5',
       titleKey: 'proj5_title',
@@ -35,6 +52,7 @@ const ProjectsSection = () => {
       tags: ['React', 'FastAPI', 'TensorFlow', 'Python', 'OpenCV'],
       githubUrl: 'https://github.com/Nicolas-Cabello/AISTETIC',
       liveUrl: '',
+      downloadUrl: 'https://drive.google.com/file/d/1BC498ePOj8LCLBYX_FY8qFWLYdMXriDG/view?usp=sharing',
     },
     {
       id: 'p6',
@@ -166,7 +184,7 @@ const ProjectCard = ({ project, delay }: { project: ProjectData; delay: number }
       <article 
         className="bg-[#111113] rounded-xl overflow-hidden glow-border group transition-all duration-300 hover:-translate-y-1 cursor-pointer"
         onClick={() => {
-          const targetUrl = project.liveUrl || project.githubUrl;
+          const targetUrl = project.liveUrl || project.downloadUrl || project.githubUrl;
           window.open(targetUrl, '_blank', 'noopener,noreferrer');
         }}
       >
@@ -241,6 +259,22 @@ const ProjectCard = ({ project, delay }: { project: ProjectData; delay: number }
                 >
                   <i className="ri-external-link-line" />
                   {t('proj_btn_live')}
+                </a>
+              </>
+            )}
+            {project.downloadUrl && (
+              <>
+                <span className="text-zinc-600">·</span>
+                <a
+                  href={project.downloadUrl}
+                  target="_blank"
+                  rel="noopener noreferrer nofollow"
+                  className="flex items-center gap-2 text-zinc-400 hover:text-green-400 text-sm transition-colors duration-200 cursor-pointer whitespace-nowrap"
+                  aria-label={`Descargar ${t(project.titleKey)}`}
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <i className="ri-download-line" />
+                  {t('proj_btn_download')}
                 </a>
               </>
             )}
