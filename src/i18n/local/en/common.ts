@@ -60,7 +60,7 @@ const en = {
   proj_btn_download: 'Download App',
   proj4_title: 'AnaliticaData — AI-Powered Data Analysis',
   proj4_badge: 'AI & Data',
-  proj4_desc: 'Web application that allows users to chat with CSV files using artificial intelligence. Upload your dataset, ask questions in natural language and the AI automatically generates charts, statistics and interactive visualizations to support data-driven decisions.',
+  proj4_desc: 'Web application that allows users to chat with CSV files using artificial intelligence. Upload your dataset, ask questions in natural language and the AI automatically generates charts, statistics and interactive visualizations to support data-driven decisions. (Project under development)',
   proj4_h1: 'Chat with CSV files via AI',
   proj4_h2: 'Automatic chart generation',
   proj4_h3: 'Natural language analysis',

@@ -60,7 +60,7 @@ const es = {
   proj_btn_download: 'Descargar aplicación',
   proj4_title: 'AnaliticaData — Análisis de Datos con IA',
   proj4_badge: 'IA & Data',
-  proj4_desc: 'Aplicación web que permite chatear con archivos CSV usando inteligencia artificial. El usuario sube su dataset, hace preguntas en lenguaje natural y la IA genera automáticamente gráficos, estadísticas y visualizaciones interactivas para facilitar la toma de decisiones.',
+  proj4_desc: 'Aplicación web que permite chatear con archivos CSV usando inteligencia artificial. El usuario sube su dataset, hace preguntas en lenguaje natural y la IA genera automáticamente gráficos, estadísticas y visualizaciones interactivas para facilitar la toma de decisiones. (Proyecto en desarrollo)',
   proj4_h1: 'Chat con archivos CSV vía IA',
   proj4_h2: 'Generación automática de gráficos',
   proj4_h3: 'Análisis en lenguaje natural',
