@@ -23,6 +23,21 @@ const ProjectsSection = () => {
 
   const projects: ProjectData[] = [
     {
+      id: 'p8',
+      titleKey: 'proj8_title',
+      descKey: 'proj8_desc',
+      badgeKey: 'proj8_badge',
+      badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
+      image: '/images/crm.png',
+      icon: 'ri-dashboard-line',
+      iconBg: 'bg-cyan-500/10',
+      iconColor: 'text-cyan-400',
+      highlightKeys: ['proj8_h1', 'proj8_h2', 'proj8_h3', 'proj8_h4'],
+      tags: ['React', 'Vite', 'Tailwind CSS', 'TypeScript', 'Vercel'],
+      githubUrl: 'https://github.com/Nicolas-Cabello',
+      liveUrl: 'https://crm-demo-nc.vercel.app/',
+    },
+    {
       id: 'p7',
       titleKey: 'proj7_title',
       descKey: 'proj7_desc',

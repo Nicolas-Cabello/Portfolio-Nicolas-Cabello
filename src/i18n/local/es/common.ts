@@ -86,6 +86,13 @@ const es = {
   proj7_h2: 'Visor 3D y procesamiento CAD',
   proj7_h3: 'Lectura de planos en PDF',
   proj7_h4: 'Generación de reportes PDF',
+  proj8_title: 'CRM & ERP — Gestión Interna Empresarial',
+  proj8_badge: 'CRM / ERP',
+  proj8_desc: 'Aplicación web de gestión interna para la administración de clientes, control de ventas, facturación y gestión de inventario en tiempo real. Cuenta con un panel analítico e interactivo para la optimización de flujos de trabajo en empresas.',
+  proj8_h1: 'Administración de clientes y contactos',
+  proj8_h2: 'Control de ventas y facturación',
+  proj8_h3: 'Gestión de inventario en tiempo real',
+  proj8_h4: 'Panel de control y reportes analíticos',
 
   skills_label: 'Habilidades',
   skills_title_highlight: 'Stack',

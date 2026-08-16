@@ -86,6 +86,13 @@ const en = {
   proj7_h2: '3D CAD viewer & parsing',
   proj7_h3: 'PDF dimensions extractor',
   proj7_h4: 'Automated PDF quotes',
+  proj8_title: 'CRM & ERP — Internal Business Management',
+  proj8_badge: 'CRM / ERP',
+  proj8_desc: 'Web-based internal management application (CRM/ERP) for client administration, sales tracking, billing, and real-time inventory control. Features an analytical and interactive dashboard to optimize business workflows.',
+  proj8_h1: 'Client and contact management',
+  proj8_h2: 'Sales tracking and billing',
+  proj8_h3: 'Real-time inventory management',
+  proj8_h4: 'Analytical dashboard and reports',
 
   skills_label: 'Skills',
   skills_title_highlight: 'Tech',

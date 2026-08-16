@@ -30,6 +30,9 @@ Soy un apasionado de la infraestructura de sistemas y el análisis de datos. Mi 
 
 ## 📂 Proyectos Destacados
 
+### 💼 [CRM & ERP — Gestión Interna Empresarial](https://crm-demo-nc.vercel.app/)
+Aplicación web de gestión interna para la administración de clientes, control de ventas, facturación y gestión de inventario en tiempo real. Cuenta con un panel de control interactivo para la optimización de flujos de trabajo en empresas.
+
 ### 📏 [MetriCut — Presupuestos de Mecanizado CNC](https://github.com/Nicolas-Cabello/Metricut)
 Aplicación de escritorio para la generación de presupuestos de mecanizado CNC. Permite calcular costes de fabricación a partir de las dimensiones de una pieza, el material seleccionado y la máquina a utilizar, analizando modelos 3D e importando planos PDF para exportar presupuestos profesionales de forma automatizada.
 
