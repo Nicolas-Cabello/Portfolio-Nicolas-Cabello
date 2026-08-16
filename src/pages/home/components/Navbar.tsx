@@ -42,7 +42,7 @@ const Navbar = () => {
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
         <button onClick={() => scrollTo('inicio')} className="cursor-pointer flex items-center gap-3">
           <img
-            src="https://public.readdy.ai/ai/img_res/7d15968a-58e3-4ae8-a135-d33c7d9cc6cb.png"
+            src="/favicon.png"
             alt="Logo Nicolás Cabello"
             className="h-9 w-auto"
           />
