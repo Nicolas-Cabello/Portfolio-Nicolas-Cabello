@@ -1,302 +1,111 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import useInView from '../../../hooks/useInView';
+import { motion, useReducedMotion } from 'framer-motion';
+import IconButton from '../../../components/IconButton';
+import ParticleBurst from '../../../components/ParticleBurst';
+import TiltCard from '../../../components/TiltCard';
+import { linkLabelKey, projects, type Project, type ProjectLink } from '../../../content/site';
 
-interface ProjectData {
-  id: string;
-  titleKey: string;
-  descKey: string;
-  badgeKey: string;
-  badgeColor: string;
-  image: string;
-  icon: string;
-  iconBg: string;
-  iconColor: string;
-  highlightKeys: string[];
-  tags: string[];
-  githubUrl: string;
-  liveUrl: string;
-  downloadUrl?: string;
-}
+const iconFor = (kind: ProjectLink['kind']) => (kind === 'github' ? 'github' : kind === 'demo' ? 'demo' : 'download');
+
+const ProjectLinks = ({ project }: { project: Project }) => {
+  const { t } = useTranslation();
+
+  return (
+    <p className="mt-4 flex flex-wrap gap-2">
+      {project.links.map((link) => (
+        <IconButton
+          key={link.href}
+          href={link.href}
+          icon={iconFor(link.kind)}
+          className={link.kind === 'github' ? 'icon-btn-sm' : 'icon-btn-sm icon-btn-solid'}
+        >
+          {t(linkLabelKey[link.kind])}
+        </IconButton>
+      ))}
+    </p>
+  );
+};
+
+const ProjectCard = ({ project, compact = false, onEnter }: { project: Project; compact?: boolean; onEnter: (event: React.MouseEvent) => void }) => {
+  const { t } = useTranslation();
+  const title = t(project.titleKey);
+  const imageClass = compact ? 'h-24 w-full object-cover' : 'h-40 w-full object-cover';
+
+  return (
+    <TiltCard className="h-full" onMouseEnter={onEnter}>
+      <article data-project={project.id} className="gradient-border glass-card flex h-full flex-col overflow-hidden rounded-2xl">
+        {project.image ? (
+          <img src={project.image} alt={title} className={imageClass} />
+        ) : (
+          <div className={`flex items-end bg-[radial-gradient(circle_at_30%_30%,#7c3aed,transparent_55%),radial-gradient(circle_at_70%_70%,#06b6d4,transparent_50%)] p-4 ${compact ? 'h-24' : 'h-40'}`}>
+            <span className="font-semibold">{title}</span>
+          </div>
+        )}
+        <div className={`flex flex-1 flex-col ${compact ? 'p-3' : 'p-4'}`}>
+          <h3 className={`font-bold ${compact ? 'text-base' : 'text-lg'}`}>{title}</h3>
+          <p className={`mt-2 text-[#94a3b8] ${compact ? 'text-xs' : 'text-sm'}`}>{t(project.summaryKey)}</p>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {project.tags.map((tag) => (
+              <li key={tag} className="mono rounded-full border border-white/10 px-2 py-1 text-[11px]">{tag}</li>
+            ))}
+          </ul>
+          <ProjectLinks project={project} />
+        </div>
+      </article>
+    </TiltCard>
+  );
+};
 
 const ProjectsSection = () => {
   const { t } = useTranslation();
+  const reduced = useReducedMotion();
+  const [burst, setBurst] = useState<{ x: number; y: number; token: number } | null>(null);
+  const featured = projects.filter((project) => project.featured);
+  const compact = projects.filter((project) => !project.featured);
 
-  const projects: ProjectData[] = [
-    {
-      id: 'p8',
-      titleKey: 'proj8_title',
-      descKey: 'proj8_desc',
-      badgeKey: 'proj8_badge',
-      badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-      image: '/images/crm.png',
-      icon: 'ri-dashboard-line',
-      iconBg: 'bg-cyan-500/10',
-      iconColor: 'text-cyan-400',
-      highlightKeys: ['proj8_h1', 'proj8_h2', 'proj8_h3', 'proj8_h4'],
-      tags: ['React', 'Vite', 'Tailwind CSS', 'TypeScript', 'Vercel'],
-      githubUrl: 'https://github.com/Nicolas-Cabello',
-      liveUrl: 'https://crm-demo-nc.vercel.app/',
-    },
-    {
-      id: 'p7',
-      titleKey: 'proj7_title',
-      descKey: 'proj7_desc',
-      badgeKey: 'proj7_badge',
-      badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-      image: '/images/metricut.png',
-      icon: 'ri-computer-line',
-      iconBg: 'bg-emerald-500/10',
-      iconColor: 'text-emerald-400',
-      highlightKeys: ['proj7_h1', 'proj7_h2', 'proj7_h3', 'proj7_h4'],
-      tags: ['React', 'Electron', 'FastAPI', 'Python', 'Three.js'],
-      githubUrl: 'https://github.com/Nicolas-Cabello/Metricut',
-      liveUrl: '',
-      downloadUrl: 'https://drive.google.com/file/d/1TG8ChzQCM1zl0ZTSJszB-99iaxEURPwe/view?usp=sharing',
-    },
-    {
-      id: 'p5',
-      titleKey: 'proj5_title',
-      descKey: 'proj5_desc',
-      badgeKey: 'proj5_badge',
-      badgeColor: 'bg-violet-500/20 text-violet-400 border-violet-500/30',
-      image: '/images/aistetic.png',
-      icon: 'ri-scissors-cut-line',
-      iconBg: 'bg-violet-500/10',
-      iconColor: 'text-violet-400',
-      highlightKeys: ['proj5_h1', 'proj5_h2', 'proj5_h3', 'proj5_h4'],
-      tags: ['React', 'FastAPI', 'TensorFlow', 'Python', 'OpenCV'],
-      githubUrl: 'https://github.com/Nicolas-Cabello/AISTETIC',
-      liveUrl: '',
-      downloadUrl: 'https://drive.google.com/file/d/1BC498ePOj8LCLBYX_FY8qFWLYdMXriDG/view?usp=sharing',
-    },
-    {
-      id: 'p6',
-      titleKey: 'proj6_title',
-      descKey: 'proj6_desc',
-      badgeKey: 'proj6_badge',
-      badgeColor: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
-      image: '/images/agropecuario.png',
-      icon: 'ri-plant-line',
-      iconBg: 'bg-emerald-500/10',
-      iconColor: 'text-emerald-400',
-      highlightKeys: ['proj6_h1', 'proj6_h2', 'proj6_h3', 'proj6_h4'],
-      tags: ['Python', 'PyTorch', 'TensorFlow', 'Power BI', 'KDD'],
-      githubUrl: 'https://github.com/Nicolas-Cabello/Analisis-Sector-Agropecuario',
-      liveUrl: '',
-    },
-    {
-      id: 'p1',
-      titleKey: 'proj1_title',
-      descKey: 'proj1_desc',
-      badgeKey: 'proj1_badge',
-      badgeColor: 'bg-rose-500/20 text-rose-400 border-rose-500/30',
-      image: 'https://readdy.ai/api/search-image?query=cybersecurity%20digital%20authentication%20fingerprint%20biometric%20scanner%20Linux%20terminal%20interface%20dark%20background%20green%20neon%20glowing%20security%20shield%20access%20control%20two%20factor%20authentication%20professional%20system%20modern%20UI&width=800&height=500&seq=proj001&orientation=landscape',
-      icon: 'ri-shield-keyhole-line',
-      iconBg: 'bg-rose-500/10',
-      iconColor: 'text-rose-400',
-      highlightKeys: ['proj1_h1', 'proj1_h2', 'proj1_h3', 'proj1_h4'],
-      tags: ['Python', 'Linux', 'PAM', 'Biometría', 'TOTP'],
-      githubUrl: 'https://github.com/Nicolas-Cabello/Sistema-de-Seguridad-2FA-y-biometrico-en-Linux',
-      liveUrl: '',
-    },
-    {
-      id: 'p4',
-      titleKey: 'proj4_title',
-      descKey: 'proj4_desc',
-      badgeKey: 'proj4_badge',
-      badgeColor: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30',
-      image: 'https://readdy.ai/api/search-image?query=data%20analytics%20AI%20dashboard%20CSV%20file%20upload%20chart%20generation%20bar%20chart%20line%20graph%20pie%20chart%20dark%20background%20cyan%20teal%20accent%20modern%20web%20application%20data%20visualization%20automatic%20intelligent%20analysis%20professional%20UI%20clean%20minimal%20design&width=800&height=500&seq=proj004&orientation=landscape',
-      icon: 'ri-line-chart-line',
-      iconBg: 'bg-cyan-500/10',
-      iconColor: 'text-cyan-400',
-      highlightKeys: ['proj4_h1', 'proj4_h2', 'proj4_h3', 'proj4_h4'],
-      tags: ['Next.js', 'TypeScript', 'IA', 'CSV', 'Vercel'],
-      githubUrl: 'https://github.com/Nicolas-Cabello/AnaliticaData',
-      liveUrl: 'https://analitica-data.vercel.app/',
-    },
-    {
-      id: 'p2',
-      titleKey: 'proj2_title',
-      descKey: 'proj2_desc',
-      badgeKey: 'proj2_badge',
-      badgeColor: 'bg-green-500/20 text-green-400 border-green-500/30',
-      image: 'https://readdy.ai/api/search-image?query=data%20science%20machine%20learning%20analytics%20dashboard%20automotive%20used%20cars%20Spain%20market%20data%20visualization%20charts%20graphs%20Python%20predictive%20model%20dark%20professional%20interface%20clean%20modern%20digital&width=800&height=500&seq=proj002&orientation=landscape',
-      icon: 'ri-bar-chart-2-line',
-      iconBg: 'bg-green-500/10',
-      iconColor: 'text-green-400',
-      highlightKeys: ['proj2_h1', 'proj2_h2', 'proj2_h3', 'proj2_h4'],
-      tags: ['Python', 'Scikit-learn', 'XGBoost', 'Pandas', 'EDA'],
-      githubUrl: 'https://github.com/Nicolas-Cabello/Analisis-Mercado-Automocion',
-      liveUrl: '',
-    },
-    {
-      id: 'p3',
-      titleKey: 'proj3_title',
-      descKey: 'proj3_desc',
-      badgeKey: 'proj3_badge',
-      badgeColor: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
-      image: 'https://readdy.ai/api/search-image?query=chatbot%20conversational%20AI%20interface%20parcel%20tracking%20delivery%20logistics%20courier%20service%20dark%20background%20warm%20amber%20accent%20modern%20web%20application%20chat%20bubbles%20package%20shipment%20status%20real-time%20professional%20UI%20clean%20minimal%20design&width=800&height=500&seq=proj003&orientation=landscape',
-      icon: 'ri-chat-3-line',
-      iconBg: 'bg-amber-500/10',
-      iconColor: 'text-amber-400',
-      highlightKeys: ['proj3_h1', 'proj3_h2', 'proj3_h3', 'proj3_h4'],
-      tags: ['React', 'TypeScript', 'Chatbot', 'Vercel', 'NLP'],
-      githubUrl: 'https://github.com/Nicolas-Cabello/Chatbot-Correos-Express',
-      liveUrl: 'https://chatbot-correos-express-kh5p3n1xu-nicolas-cabellos-projects.vercel.app/',
-    },
-  ];
-
-  const { ref: titleRef, isVisible: titleVisible } = useInView();
+  const enter = (event: React.MouseEvent) => {
+    if (reduced) return;
+    setBurst({ x: event.clientX, y: event.clientY, token: Date.now() });
+  };
 
   return (
-    <section id="proyectos" className="py-24 bg-[#0c0c0e] relative overflow-hidden">
-      <div className="absolute bottom-0 left-0 w-96 h-96 bg-green-400/5 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-6xl mx-auto px-6">
-        <div
-          ref={titleRef}
-          className="in-view mb-16"
-          style={titleVisible ? { opacity: 1, transform: 'translateY(0)' } : {}}
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <span className="w-8 h-px bg-green-400" />
-            <span className="text-green-400 text-sm font-medium uppercase tracking-widest">{t('proj_label')}</span>
-          </div>
-          <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
-            <h2 className="text-4xl md:text-5xl font-bold text-white">
-              {t('proj_title_plain')} <span className="gradient-text">{t('proj_title_highlight')}</span>
-            </h2>
-            <p className="text-zinc-400 text-sm max-w-xs md:text-right">
-              {t('proj_subtitle')}
-            </p>
-          </div>
+    <section id="proyectos" className="relative bg-[#0a0a1a] px-6 py-24">
+      {burst && <ParticleBurst x={burst.x} y={burst.y} token={burst.token} />}
+      <div className="mx-auto max-w-6xl">
+        <p className="mono text-sm text-[#06b6d4]">{t('proj_label')}</p>
+        <h2 className="text-depth mt-2 text-4xl font-bold md:text-5xl">{t('proj_title')}</h2>
+        <div className="mt-8 grid gap-4 md:grid-cols-2">
+          {featured.map((project, index) => (
+            <motion.div
+              key={project.id}
+              className="h-full"
+              initial={reduced ? false : { opacity: 0, y: 28, filter: 'blur(6px)' }}
+              whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+              viewport={{ once: true, amount: 0.25 }}
+              transition={{ delay: reduced ? 0 : index * 0.08 }}
+            >
+              <ProjectCard project={project} onEnter={enter} />
+            </motion.div>
+          ))}
         </div>
-
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {projects.map((project, i) => (
-            <ProjectCard key={project.id} project={project} delay={i * 0.15} />
+        <p className="mono mt-12 text-xs uppercase tracking-[0.2em] text-[#94a3b8]">{t('proj_more')}</p>
+        <div className="mt-4 grid grid-cols-1 gap-3 sm:grid-cols-2 md:grid-cols-3">
+          {compact.map((project, index) => (
+            <motion.div
+              key={project.id}
+              className="h-full"
+              initial={reduced ? false : { opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.3 }}
+              transition={{ delay: reduced ? 0 : index * 0.08 }}
+            >
+              <ProjectCard project={project} compact onEnter={enter} />
+            </motion.div>
           ))}
         </div>
       </div>
     </section>
-  );
-};
-
-const ProjectCard = ({ project, delay }: { project: ProjectData; delay: number }) => {
-  const { t } = useTranslation();
-  const { ref, isVisible } = useInView({ threshold: 0.1 });
-
-  return (
-    <div
-      ref={ref}
-      className="in-view"
-      style={
-        isVisible
-          ? { opacity: 1, transform: 'translateY(0)', transitionDelay: `${delay}s` }
-          : { transitionDelay: `${delay}s` }
-      }
-    >
-      <article 
-        className="bg-[#111113] rounded-xl overflow-hidden glow-border group transition-all duration-300 hover:-translate-y-1 cursor-pointer"
-        onClick={() => {
-          const targetUrl = project.liveUrl || project.downloadUrl || project.githubUrl;
-          window.open(targetUrl, '_blank', 'noopener,noreferrer');
-        }}
-      >
-        <div className="relative h-52 overflow-hidden">
-          <img
-            src={project.image}
-            alt={t(project.titleKey)}
-            className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-[#111113] via-[#111113]/30 to-transparent" />
-          <span className={`absolute top-4 right-4 text-xs font-semibold px-3 py-1.5 rounded-full border backdrop-blur-sm whitespace-nowrap ${project.badgeColor}`}>
-            {t(project.badgeKey)}
-          </span>
-        </div>
-
-        <div className="p-6">
-          <div className="flex items-start gap-4 mb-4">
-            <div className={`w-10 h-10 flex items-center justify-center rounded-lg flex-shrink-0 ${project.iconBg}`}>
-              <i className={`${project.icon} text-lg ${project.iconColor}`} />
-            </div>
-            <h3 className="text-white font-bold text-lg leading-snug group-hover:text-green-400 transition-colors duration-200">
-              {t(project.titleKey)}
-            </h3>
-          </div>
-
-          <p className="text-zinc-300 text-[15px] leading-relaxed mb-5">{t(project.descKey)}</p>
-
-          <ul className="grid grid-cols-2 gap-2 mb-5">
-            {project.highlightKeys.map((hk) => (
-              <li key={hk} className="flex items-center gap-2 text-zinc-300 text-sm">
-                <span className="w-1.5 h-1.5 flex items-center justify-center flex-shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                </span>
-                {t(hk)}
-              </li>
-            ))}
-          </ul>
-
-          <div className="flex flex-wrap gap-2 mb-5">
-            {project.tags.map((tag) => (
-              <span
-                key={tag}
-                className="text-sm text-zinc-300 bg-[#18181b] border border-white/5 px-3 py-1 rounded-md whitespace-nowrap"
-              >
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          <div className="flex items-center gap-4 pt-4 border-t border-white/5">
-            <a
-              href={project.githubUrl}
-              target="_blank"
-              rel="noopener noreferrer nofollow"
-              className="flex items-center gap-2 text-zinc-400 hover:text-green-400 text-sm transition-colors duration-200 cursor-pointer whitespace-nowrap"
-              aria-label={`Ver código de ${t(project.titleKey)} en GitHub`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <i className="ri-github-fill" />
-              {t('proj_btn_repo')}
-            </a>
-            {project.liveUrl && (
-              <>
-                <span className="text-zinc-600">·</span>
-                <a
-                  href={project.liveUrl}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  className="flex items-center gap-2 text-zinc-400 hover:text-green-400 text-sm transition-colors duration-200 cursor-pointer whitespace-nowrap"
-                  aria-label={`Ver demo de ${t(project.titleKey)}`}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <i className="ri-external-link-line" />
-                  {t('proj_btn_live')}
-                </a>
-              </>
-            )}
-            {project.downloadUrl && (
-              <>
-                <span className="text-zinc-600">·</span>
-                <a
-                  href={project.downloadUrl}
-                  target="_blank"
-                  rel="noopener noreferrer nofollow"
-                  className="flex items-center gap-2 text-zinc-400 hover:text-green-400 text-sm transition-colors duration-200 cursor-pointer whitespace-nowrap"
-                  aria-label={`Descargar ${t(project.titleKey)}`}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <i className="ri-download-line" />
-                  {t('proj_btn_download')}
-                </a>
-              </>
-            )}
-          </div>
-        </div>
-      </article>
-    </div>
   );
 };
 

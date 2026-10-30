@@ -1,128 +1,75 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import MagneticButton from '../../../components/MagneticButton';
 
 const Navbar = () => {
   const { t, i18n } = useTranslation();
   const [scrolled, setScrolled] = useState(false);
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [open, setOpen] = useState(false);
+  const isEn = (i18n.resolvedLanguage ?? i18n.language).startsWith('en');
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    const onScroll = () => setScrolled(window.scrollY > 24);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    setMobileOpen(false);
-  };
+  useEffect(() => {
+    document.documentElement.lang = isEn ? 'en' : 'es';
+  }, [isEn]);
 
-  const toggleLang = () => {
-    i18n.changeLanguage(i18n.language === 'es' ? 'en' : 'es');
-  };
-
-  const navLinks = [
-    { label: t('nav_inicio'), id: 'inicio' },
-    { label: t('nav_sobre_mi'), id: 'sobre-mi' },
-    { label: t('nav_proyectos'), id: 'proyectos' },
-    { label: t('nav_habilidades'), id: 'habilidades' },
-    { label: t('nav_experiencia'), id: 'experiencia' },
-    { label: t('nav_curriculum'), id: 'curriculum' },
-    { label: t('nav_contacto'), id: 'contacto' },
+  const links = [
+    { id: 'inicio', label: t('nav_inicio') },
+    { id: 'sobre-mi', label: t('nav_sobre_mi') },
+    { id: 'proyectos', label: t('nav_proyectos') },
+    { id: 'habilidades', label: t('nav_habilidades') },
+    { id: 'experiencia', label: t('nav_experiencia') },
+    { id: 'curriculum', label: t('nav_curriculum') },
   ];
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'bg-[#09090b]/95 backdrop-blur-md border-b border-white/5'
-          : 'bg-transparent'
-      }`}
-    >
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <button onClick={() => scrollTo('inicio')} className="cursor-pointer flex items-center gap-3">
-          <img
-            src="/favicon.png"
-            alt="Logo Nicolás Cabello"
-            className="h-9 w-auto"
-          />
-          <span
-            className="text-white font-semibold text-sm tracking-wide hidden sm:block"
-            style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-          >
-            Nicolás Cabello
-          </span>
-        </button>
-
-        <ul className="hidden md:flex items-center gap-7">
-          {navLinks.map((link) => (
-            <li key={link.id}>
-              <button
-                onClick={() => scrollTo(link.id)}
-                className="text-zinc-400 hover:text-green-400 transition-colors duration-200 text-sm font-medium cursor-pointer whitespace-nowrap"
-              >
-                {link.label}
-              </button>
-            </li>
+    <header className={`fixed inset-x-0 top-0 z-50 transition-colors ${scrolled ? 'border-b border-white/10 bg-[#030014]/70 backdrop-blur-[15px]' : 'bg-transparent'}`}>
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
+        <a href="#inicio" className="flex items-center gap-3">
+          <img src="/favicon.png" alt="" className="float-a h-9 w-9" />
+          <span className="hidden text-sm font-semibold sm:block">Nicolás Cabello</span>
+        </a>
+        <nav className="hidden items-center gap-5 lg:flex">
+          {links.map((link) => (
+            <a key={link.id} href={`#${link.id}`} className="nav-link text-sm text-[#94a3b8] hover:text-white">
+              {link.label}
+            </a>
           ))}
-        </ul>
-
-        <div className="hidden md:flex items-center gap-3">
+        </nav>
+        <div className="flex items-center gap-3">
           <button
-            onClick={toggleLang}
-            className="flex items-center gap-1.5 border border-white/10 text-zinc-400 hover:text-green-400 hover:border-green-400/40 px-3 py-2 rounded-md text-xs font-semibold transition-all duration-200 cursor-pointer whitespace-nowrap"
-            aria-label="Cambiar idioma"
+            type="button"
+            onClick={() => i18n.changeLanguage(isEn ? 'es' : 'en')}
+            className="mono inline-flex items-center gap-1.5 rounded-full border border-white/15 px-3 py-1 text-xs"
           >
-            <i className="ri-translate-2 text-sm" />
+            <i className="ri-translate-2 text-sm text-[#06b6d4]" aria-hidden="true" />
             {t('lang_toggle')}
           </button>
-          <button
-            onClick={() => scrollTo('contacto')}
-            className="flex items-center gap-2 bg-green-400 text-[#09090b] px-5 py-2 rounded-md text-sm font-semibold hover:bg-green-300 transition-all duration-200 cursor-pointer whitespace-nowrap animate-pulseGlow"
-          >
-            <i className="ri-mail-line" />
+          <MagneticButton href="#contacto" className="rounded-full bg-gradient-to-r from-[#7c3aed] to-[#3b82f6] px-4 py-2 text-sm font-semibold text-white shadow-[0_0_18px_rgba(124,58,237,0.45)]">
+            <i className="ri-mail-line text-base" aria-hidden="true" />
             {t('nav_contactame')}
+          </MagneticButton>
+          <button type="button" className="mono text-xs lg:hidden" onClick={() => setOpen((value) => !value)} aria-expanded={open}>
+            {open ? '✕' : '☰'}
           </button>
         </div>
-
-        <button
-          className="md:hidden w-8 h-8 flex items-center justify-center text-zinc-400 hover:text-white cursor-pointer transition-colors duration-200"
-          onClick={() => setMobileOpen(!mobileOpen)}
-          aria-label="Menú"
-        >
-          <i className={`text-xl ${mobileOpen ? 'ri-close-line' : 'ri-menu-3-line'}`} />
-        </button>
       </div>
-
-      {mobileOpen && (
-        <div className="md:hidden bg-[#09090b]/98 backdrop-blur-md border-t border-white/5 px-6 py-6 flex flex-col gap-5">
-          {navLinks.map((link) => (
-            <button
-              key={link.id}
-              onClick={() => scrollTo(link.id)}
-              className="text-zinc-300 hover:text-green-400 transition-colors duration-200 text-base text-left cursor-pointer whitespace-nowrap"
-            >
+      {open && (
+        <nav className="flex flex-col gap-3 border-t border-white/10 bg-[#030014]/95 px-6 py-4 lg:hidden">
+          {links.map((link) => (
+            <a key={link.id} href={`#${link.id}`} onClick={() => setOpen(false)} className="text-left text-[#e2e8f0]">
               {link.label}
-            </button>
+            </a>
           ))}
-          <div className="flex items-center gap-3 pt-2 border-t border-white/5">
-            <button
-              onClick={() => { toggleLang(); setMobileOpen(false); }}
-              className="flex items-center gap-1.5 border border-white/10 text-zinc-400 px-3 py-2 rounded-md text-xs font-semibold cursor-pointer whitespace-nowrap"
-            >
-              <i className="ri-translate-2" />
-              {t('lang_toggle')}
-            </button>
-            <button
-              onClick={() => scrollTo('contacto')}
-              className="flex-1 bg-green-400 text-[#09090b] px-5 py-2.5 rounded-md text-sm font-semibold cursor-pointer whitespace-nowrap"
-            >
-              {t('nav_contactame')}
-            </button>
-          </div>
-        </div>
+        </nav>
       )}
-    </nav>
+    </header>
   );
 };
 

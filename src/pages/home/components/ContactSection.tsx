@@ -1,231 +1,175 @@
-import { useState, useRef } from 'react';
+import { useRef, useState } from 'react';
+import type { FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import useInView from '../../../hooks/useInView';
+import emailjs from '@emailjs/browser';
+import { motion, useReducedMotion } from 'framer-motion';
+import MagneticButton from '../../../components/MagneticButton';
+import ParticleBurst from '../../../components/ParticleBurst';
+import ParticleNetwork from '../../../components/ParticleNetwork';
+import TiltCard from '../../../components/TiltCard';
+import { EMAIL, GITHUB_LABEL, GITHUB_URL, LINKEDIN_URL } from '../../../content/site';
 
-type FormStatus = 'idle' | 'loading' | 'success' | 'error';
-
-const FORM_URL = 'https://readdy.ai/api/form/d7556hucsbv12mkudej0';
-const EMAIL = 'nicolascabelloalonso@gmail.com';
-const LINKEDIN_URL = 'https://www.linkedin.com/in/nicol%C3%A1s-cabello-alonso-94319a282/';
-const GITHUB_URL = 'https://github.com/Nicolas-Cabello';
+type Status = 'idle' | 'loading' | 'success' | 'error' | 'missing';
 
 const ContactSection = () => {
   const { t } = useTranslation();
-  const { ref: titleRef, isVisible: titleVisible } = useInView();
-  const [formStatus, setFormStatus] = useState<FormStatus>('idle');
-  const [charCount, setCharCount] = useState(0);
+  const reduced = useReducedMotion();
   const formRef = useRef<HTMLFormElement>(null);
+  const [status, setStatus] = useState<Status>('idle');
+  const [charCount, setCharCount] = useState(0);
+  const [burst, setBurst] = useState<{ x: number; y: number; token: number; color: string } | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const form = e.currentTarget;
-    const messageField = form.querySelector<HTMLTextAreaElement>('textarea[name="mensaje"]');
-    if (messageField && messageField.value.length > 500) return;
+  const contactLinks = [
+    { icon: 'ri-mail-line', labelKey: 'contact_email_label', value: EMAIL, href: `mailto:${EMAIL}`, external: false },
+    { icon: 'ri-linkedin-fill', labelKey: 'contact_linkedin_label', value: t('contact_linkedin_display'), href: LINKEDIN_URL, external: true },
+    { icon: 'ri-github-fill', labelKey: 'contact_github_label', value: GITHUB_LABEL, href: GITHUB_URL, external: true },
+  ];
 
-    const formData = new FormData(form);
-    const urlEncoded = new URLSearchParams();
-    formData.forEach((value, key) => urlEncoded.append(key, value.toString()));
-
-    setFormStatus('loading');
+  const onSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (charCount > 500) return;
+    const service = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+    const template = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+    const key = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+    if (!service || !template || !key || !formRef.current) {
+      setStatus('missing');
+      return;
+    }
+    setStatus('loading');
     try {
-      const response = await fetch(FORM_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: urlEncoded.toString(),
-      });
-      if (response.ok) {
-        setFormStatus('success');
-        formRef.current?.reset();
-        setCharCount(0);
-      } else {
-        setFormStatus('error');
-      }
+      await emailjs.sendForm(service, template, formRef.current, { publicKey: key });
+      setStatus('success');
+      formRef.current.reset();
+      setCharCount(0);
+      setBurst({ x: window.innerWidth / 2, y: window.innerHeight / 2, token: Date.now(), color: '#22c55e' });
     } catch {
-      setFormStatus('error');
+      setStatus('error');
+      setBurst({ x: window.innerWidth / 2, y: window.innerHeight / 2, token: Date.now(), color: '#f43f5e' });
     }
   };
 
-  const contactLinks = [
-    {
-      icon: 'ri-mail-line',
-      labelKey: 'contact_email_label',
-      value: EMAIL,
-      href: `mailto:${EMAIL}`,
-    },
-    {
-      icon: 'ri-linkedin-fill',
-      labelKey: 'contact_linkedin_label',
-      valueKey: 'contact_linkedin_display',
-      href: LINKEDIN_URL,
-    },
-    {
-      icon: 'ri-github-fill',
-      labelKey: 'contact_github_label',
-      valueKey: 'contact_github_display',
-      href: GITHUB_URL,
-    },
-  ];
-
   return (
-    <section id="contacto" className="py-24 bg-[#09090b] relative overflow-hidden">
-      <div className="absolute top-0 right-0 w-80 h-80 bg-green-400/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-64 h-64 bg-green-400/4 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-6xl mx-auto px-6">
-        <div
-          ref={titleRef}
-          className="in-view mb-16 text-center"
-          style={titleVisible ? { opacity: 1, transform: 'translateY(0)' } : {}}
+    <section id="contacto" className="relative overflow-hidden px-6 py-24">
+      <ParticleNetwork id="contact-particles" density={24} interactive={false} />
+      {burst && <ParticleBurst x={burst.x} y={burst.y} token={burst.token} color={burst.color} />}
+      <div className="relative mx-auto max-w-6xl">
+        <motion.div
+          className="mb-16 text-center"
+          initial={reduced ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
         >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <span className="w-8 h-px bg-green-400" />
-            <span className="text-green-400 text-sm font-medium uppercase tracking-widest">{t('contact_label')}</span>
-            <span className="w-8 h-px bg-green-400" />
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            <span className="gradient-text">{t('contact_title_highlight')}</span> {t('contact_title_plain')}
+          <p className="mono text-sm text-[#06b6d4]">{t('contact_label')}</p>
+          <h2 className="text-depth mt-2 text-4xl font-bold md:text-5xl">
+            <span className="text-[#06b6d4]">{t('contact_title_highlight')}</span> {t('contact_title_plain')}
           </h2>
-          <p className="text-zinc-400 max-w-xl mx-auto text-[17px]">{t('contact_subtitle')}</p>
-        </div>
+          <p className="mx-auto mt-4 max-w-xl text-[#94a3b8]">{t('contact_subtitle')}</p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-5 gap-10 lg:gap-12">
-          <div className="lg:col-span-2 space-y-6">
-            {contactLinks.map((item) => (
-              <a
-                key={item.labelKey}
-                href={item.href}
-                target={item.href.startsWith('mailto') ? undefined : '_blank'}
-                rel="noopener noreferrer nofollow"
-                className="flex items-center gap-4 bg-[#111113] rounded-xl p-5 glow-border group transition-all duration-300 hover:bg-[#141416] cursor-pointer"
-                aria-label={t(item.labelKey)}
-              >
-                <div className="w-10 h-10 flex items-center justify-center bg-green-400/10 rounded-lg flex-shrink-0">
-                  <i className={`${item.icon} text-green-400`} />
-                </div>
-                <div className="min-w-0">
-                  <p className="text-zinc-400 text-sm mb-0.5">{t(item.labelKey)}</p>
-                  <p className="text-white text-[15px] font-medium group-hover:text-green-400 transition-colors duration-200 truncate">
-                    {item.value ?? t(item.valueKey ?? '')}
-                  </p>
-                </div>
-              </a>
-            ))}
-
-            <div className="bg-[#111113] rounded-xl p-5 glow-border">
-              <div className="flex items-center gap-3 mb-3">
-                <span className="w-2 h-2 flex items-center justify-center">
-                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulseGlow" />
-                </span>
-                <p className="text-white text-[15px] font-medium">{t('contact_available_label')}</p>
-              </div>
-              <p className="text-zinc-400 text-sm leading-relaxed">{t('contact_available_desc')}</p>
-            </div>
-          </div>
-
-          <div className="lg:col-span-3">
-            <form
-              ref={formRef}
-              onSubmit={handleSubmit}
-              data-readdy-form
-              className="bg-[#111113] rounded-xl p-7 glow-border space-y-5"
-            >
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-zinc-400 text-xs font-medium mb-2" htmlFor="nombre">
-                    {t('form_name_label')} <span className="text-rose-400">*</span>
-                  </label>
-                  <input
-                    id="nombre"
-                    name="nombre"
-                    type="text"
-                    required
-                    placeholder={t('form_name_placeholder')}
-                    className="w-full bg-[#18181b] border border-white/5 text-white text-sm placeholder-zinc-600 rounded-md px-4 py-3 focus:outline-none focus:border-green-400/50 transition-colors duration-200"
-                  />
-                </div>
-                <div>
-                  <label className="block text-zinc-400 text-xs font-medium mb-2" htmlFor="email">
-                    Email <span className="text-rose-400">*</span>
-                  </label>
-                  <input
-                    id="email"
-                    name="email"
-                    type="email"
-                    required
-                    placeholder={t('form_email_placeholder')}
-                    className="w-full bg-[#18181b] border border-white/5 text-white text-sm placeholder-zinc-600 rounded-md px-4 py-3 focus:outline-none focus:border-green-400/50 transition-colors duration-200"
-                  />
-                </div>
-              </div>
-
-              <div>
-                <label className="block text-zinc-400 text-xs font-medium mb-2" htmlFor="asunto">
-                  {t('form_subject_label')} <span className="text-rose-400">*</span>
-                </label>
-                <input
-                  id="asunto"
-                  name="asunto"
-                  type="text"
-                  required
-                  placeholder={t('form_subject_placeholder')}
-                  className="w-full bg-[#18181b] border border-white/5 text-white text-sm placeholder-zinc-600 rounded-md px-4 py-3 focus:outline-none focus:border-green-400/50 transition-colors duration-200"
-                />
-              </div>
-
-              <div>
-                <div className="flex items-center justify-between mb-2">
-                  <label className="block text-zinc-400 text-xs font-medium" htmlFor="mensaje">
-                    {t('form_message_label')} <span className="text-rose-400">*</span>
-                  </label>
-                  <span className={`text-xs ${charCount > 480 ? 'text-rose-400' : 'text-zinc-600'}`}>
-                    {charCount}/500
+        <div className="grid gap-10 lg:grid-cols-5 lg:gap-12">
+          <TiltCard className="lg:col-span-2">
+            <div className="space-y-4">
+              {contactLinks.map((item) => (
+                <a
+                  key={item.labelKey}
+                  href={item.href}
+                  target={item.external ? '_blank' : undefined}
+                  rel={item.external ? 'noreferrer' : undefined}
+                  aria-label={t(item.labelKey)}
+                  className="glass-card group flex items-center gap-4 rounded-2xl p-5 transition-colors duration-300 hover:bg-[#141428]"
+                >
+                  <span className="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-lg bg-[#7c3aed]/15 text-[#c4b5fd]">
+                    <i className={`${item.icon} text-lg`} aria-hidden="true" />
                   </span>
+                  <span className="min-w-0">
+                    <span className="block text-sm text-[#94a3b8]">{t(item.labelKey)}</span>
+                    <span className="block truncate font-medium transition-colors duration-200 group-hover:text-[#06b6d4]">
+                      {item.value}
+                    </span>
+                  </span>
+                </a>
+              ))}
+              <article className="glass-card rounded-2xl p-5">
+                <p className="flex items-center gap-3 font-medium">
+                  <span className="h-2 w-2 rounded-full bg-emerald-400" style={{ animation: reduced ? undefined : 'glow-pulse 2s ease-in-out infinite' }} />
+                  {t('contact_available_label')}
+                </p>
+                <p className="mt-3 text-sm leading-relaxed text-[#94a3b8]">{t('contact_available_desc')}</p>
+              </article>
+            </div>
+          </TiltCard>
+
+          <TiltCard className="lg:col-span-3">
+            <form ref={formRef} onSubmit={onSubmit} className={`glass-card space-y-5 rounded-2xl p-7 ${status === 'error' ? 'shake' : ''}`}>
+              <div className="grid gap-5 sm:grid-cols-2">
+                <label className="block text-xs font-medium text-[#94a3b8]" htmlFor="from_name">
+                  {t('form_name_label')} <span className="text-[#f43f5e]">*</span>
+                  <input id="from_name" name="from_name" required className="field mt-2 text-sm" placeholder={t('form_name_placeholder')} />
+                </label>
+                <label className="block text-xs font-medium text-[#94a3b8]" htmlFor="reply_to">
+                  Email <span className="text-[#f43f5e]">*</span>
+                  <input id="reply_to" name="reply_to" type="email" required className="field mt-2 text-sm" placeholder={t('form_email_placeholder')} />
+                </label>
+              </div>
+              <label className="block text-xs font-medium text-[#94a3b8]" htmlFor="subject">
+                {t('form_subject_label')} <span className="text-[#f43f5e]">*</span>
+                <input id="subject" name="subject" required className="field mt-2 text-sm" placeholder={t('form_subject_placeholder')} />
+              </label>
+              <div>
+                <div className="mb-2 flex items-center justify-between">
+                  <label className="text-xs font-medium text-[#94a3b8]" htmlFor="message">
+                    {t('form_message_label')} <span className="text-[#f43f5e]">*</span>
+                  </label>
+                  <span className={`text-xs ${charCount > 480 ? 'text-[#f43f5e]' : 'text-[#64748b]'}`}>{charCount}/500</span>
                 </div>
                 <textarea
-                  id="mensaje"
-                  name="mensaje"
+                  id="message"
+                  name="message"
                   required
                   rows={5}
                   maxLength={500}
                   placeholder={t('form_message_placeholder')}
-                  onChange={(e) => setCharCount(e.target.value.length)}
-                  className="w-full bg-[#18181b] border border-white/5 text-white text-sm placeholder-zinc-600 rounded-md px-4 py-3 focus:outline-none focus:border-green-400/50 transition-colors duration-200 resize-none"
+                  onChange={(event) => setCharCount(event.target.value.length)}
+                  className="field resize-none text-sm"
                 />
               </div>
-
-              {formStatus === 'success' && (
-                <div className="flex items-center gap-3 bg-green-400/10 border border-green-400/20 rounded-lg p-4">
-                  <i className="ri-checkbox-circle-line text-green-400 text-lg" />
-                  <p className="text-green-400 text-sm font-medium">{t('form_success')}</p>
-                </div>
+              {status === 'success' && (
+                <p className="flex items-center gap-3 rounded-lg border border-emerald-400/20 bg-emerald-400/10 p-4 text-sm text-emerald-300">
+                  <i className="ri-checkbox-circle-line text-lg" aria-hidden="true" />
+                  {t('form_success')}
+                </p>
               )}
-
-              {formStatus === 'error' && (
-                <div className="flex items-center gap-3 bg-rose-400/10 border border-rose-400/20 rounded-lg p-4">
-                  <i className="ri-error-warning-line text-rose-400 text-lg" />
-                  <p className="text-rose-400 text-sm font-medium">{t('form_error')}</p>
-                </div>
+              {status === 'error' && (
+                <p className="flex items-center gap-3 rounded-lg border border-[#f43f5e]/20 bg-[#f43f5e]/10 p-4 text-sm text-[#fda4af]">
+                  <i className="ri-error-warning-line text-lg" aria-hidden="true" />
+                  {t('form_error')}
+                </p>
               )}
-
-              <button
+              {status === 'missing' && (
+                <p className="flex items-center gap-3 rounded-lg border border-[#f43f5e]/20 bg-[#f43f5e]/10 p-4 text-sm text-[#fda4af]">
+                  <i className="ri-error-warning-line text-lg" aria-hidden="true" />
+                  {t('form_missing')}
+                </p>
+              )}
+              <MagneticButton
                 type="submit"
-                disabled={formStatus === 'loading' || charCount > 500}
-                className="w-full flex items-center justify-center gap-2 bg-green-400 text-[#09090b] py-3.5 rounded-md font-semibold text-sm hover:bg-green-300 transition-all duration-200 disabled:opacity-60 disabled:cursor-not-allowed cursor-pointer whitespace-nowrap"
+                disabled={status === 'loading' || charCount > 500}
+                className="icon-btn icon-btn-solid w-full py-3.5 disabled:opacity-60"
               >
-                {formStatus === 'loading' ? (
+                {status === 'loading' ? (
                   <>
-                    <i className="ri-loader-4-line animate-spin" />
+                    <i className="ri-loader-4-line animate-spin" aria-hidden="true" />
                     {t('form_submitting')}
                   </>
                 ) : (
                   <>
-                    <i className="ri-send-plane-line" />
+                    <i className="ri-send-plane-line" aria-hidden="true" />
                     {t('form_submit')}
                   </>
                 )}
-              </button>
+              </MagneticButton>
             </form>
-          </div>
+          </TiltCard>
         </div>
       </div>
     </section>

@@ -1,121 +1,46 @@
 import { useTranslation } from 'react-i18next';
-
-const EMAIL = 'nicolascabelloalonso@gmail.com';
-const LINKEDIN_URL = 'https://www.linkedin.com/in/nicol%C3%A1s-cabello-alonso-94319a282/';
-const GITHUB_URL = 'https://github.com/Nicolas-Cabello';
+import IconButton from '../../../components/IconButton';
+import { EMAIL, GITHUB_URL, LINKEDIN_URL } from '../../../content/site';
 
 const FooterSection = () => {
   const { t } = useTranslation();
-  const currentYear = new Date().getFullYear();
-
-  const scrollTo = (id: string) => {
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  const navLinks = [
-    { labelKey: 'nav_inicio', id: 'inicio' },
-    { labelKey: 'nav_sobre_mi', id: 'sobre-mi' },
-    { labelKey: 'nav_proyectos', id: 'proyectos' },
-    { labelKey: 'nav_habilidades', id: 'habilidades' },
-    { labelKey: 'nav_experiencia', id: 'experiencia' },
-    { labelKey: 'nav_contacto', id: 'contacto' },
+  const year = new Date().getFullYear();
+  const links = [
+    { id: 'inicio', label: t('nav_inicio') },
+    { id: 'proyectos', label: t('nav_proyectos') },
+    { id: 'experiencia', label: t('nav_experiencia') },
+    { id: 'contacto', label: t('nav_contacto') },
   ];
 
-  const specialtyKeys = ['spec1', 'spec2', 'spec3', 'spec4', 'spec5', 'spec6'];
-
   return (
-    <footer className="bg-[#0c0c0e] border-t border-white/5 py-14">
-      <div className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mb-12">
-          <div>
-            <div className="flex items-center gap-3 mb-4">
-              <img
-                src="https://public.readdy.ai/ai/img_res/7d15968a-58e3-4ae8-a135-d33c7d9cc6cb.png"
-                alt="Logo Nicolás Cabello"
-                className="h-8 w-auto"
-              />
-              <span
-                className="text-white font-semibold text-sm"
-                style={{ fontFamily: 'Space Grotesk, sans-serif' }}
-              >
-                Nicolás Cabello
-              </span>
-            </div>
-            <p className="text-zinc-500 text-sm leading-relaxed max-w-xs">{t('footer_tagline')}</p>
-            <div className="flex items-center gap-4 mt-5">
-              <a
-                href={GITHUB_URL}
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                className="w-8 h-8 flex items-center justify-center text-zinc-600 hover:text-green-400 transition-colors duration-200 cursor-pointer"
-                aria-label="GitHub"
-              >
-                <i className="ri-github-fill text-lg" />
-              </a>
-              <a
-                href={LINKEDIN_URL}
-                target="_blank"
-                rel="noopener noreferrer nofollow"
-                className="w-8 h-8 flex items-center justify-center text-zinc-600 hover:text-green-400 transition-colors duration-200 cursor-pointer"
-                aria-label="LinkedIn"
-              >
-                <i className="ri-linkedin-fill text-lg" />
-              </a>
-              <a
-                href={`mailto:${EMAIL}`}
-                className="w-8 h-8 flex items-center justify-center text-zinc-600 hover:text-green-400 transition-colors duration-200 cursor-pointer"
-                aria-label="Email"
-              >
-                <i className="ri-mail-line text-lg" />
-              </a>
-            </div>
+    <footer className="relative border-t border-transparent bg-[#05010f] px-6 py-12 [border-image:linear-gradient(90deg,#7c3aed,#3b82f6,#06b6d4)_1]">
+      <div className="pointer-events-none absolute inset-0 opacity-30" aria-hidden="true">
+        <div className="absolute left-10 top-6 h-16 w-16 rounded-full bg-[#7c3aed]/30 blur-2xl" />
+        <div className="absolute bottom-4 right-16 h-20 w-20 rounded-full bg-[#06b6d4]/20 blur-2xl" />
+      </div>
+      <div className="relative mx-auto grid max-w-6xl gap-8 md:grid-cols-2">
+        <div>
+          <div className="flex items-center gap-3">
+            <img src="/favicon.png" alt="" className="h-8 w-8" />
+            <span className="font-semibold">Nicolás Cabello</span>
           </div>
-
-          <div>
-            <h4
-              className="text-white font-semibold text-sm mb-4 uppercase tracking-widest"
-              id="navegacion"
-            >
-              <a href="#navegacion">{t('footer_nav_title')}</a>
-            </h4>
-            <ul className="space-y-3">
-              {navLinks.map((link) => (
-                <li key={link.id}>
-                  <button
-                    onClick={() => scrollTo(link.id)}
-                    className="text-zinc-500 hover:text-green-400 transition-colors duration-200 text-sm cursor-pointer whitespace-nowrap"
-                  >
-                    {t(link.labelKey)}
-                  </button>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          <div>
-            <h4
-              className="text-white font-semibold text-sm mb-4 uppercase tracking-widest"
-              id="especialidades"
-            >
-              <a href="#especialidades">{t('footer_specialties_title')}</a>
-            </h4>
-            <ul className="space-y-3">
-              {specialtyKeys.map((key) => (
-                <li key={key}>
-                  <span className="text-zinc-500 text-sm">{t(key)}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
+          <p className="mt-3 max-w-sm text-sm text-[#94a3b8]">{t('footer_tagline')}</p>
         </div>
-
-        <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-zinc-600 text-sm">
-            &copy; {currentYear} Nicolás Cabello. {t('footer_rights')}
-          </p>
-          <p className="text-zinc-600 text-xs">{t('footer_made')}</p>
+        <div>
+          <h2 className="text-sm font-semibold uppercase tracking-[0.16em] text-[#94a3b8]">{t('footer_nav_title')}</h2>
+          <ul className="mt-3 space-y-2 text-sm">
+            {links.map((link) => (
+              <li key={link.id}>
+                <a href={`#${link.id}`} className="hover:text-[#06b6d4]">{link.label}</a>
+              </li>
+            ))}
+            <li><IconButton href={GITHUB_URL} icon="github">GitHub</IconButton></li>
+            <li><IconButton href={LINKEDIN_URL} icon="linkedin">LinkedIn</IconButton></li>
+            <li><IconButton href={`mailto:${EMAIL}`} icon="mail" external={false}>{EMAIL}</IconButton></li>
+          </ul>
         </div>
       </div>
+      <p className="relative mt-10 text-sm text-[#94a3b8]">© {year} Nicolás Cabello. {t('footer_rights')}</p>
     </footer>
   );
 };

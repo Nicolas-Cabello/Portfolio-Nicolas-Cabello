@@ -1,158 +1,180 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import useInView from '../../../hooks/useInView';
+import { motion, useReducedMotion } from 'framer-motion';
+import TiltCard from '../../../components/TiltCard';
 
-const ExperienceSection = () => {
-  const { t } = useTranslation();
-
-  const experiences = [
-    {
-      id: 'e1',
-      periodKey: 'e1_period',
-      titleKey: 'e1_title',
-      institutionKey: 'e1_institution',
-      typeKey: 'e1_type',
-      typeColor: 'bg-green-400/10 text-green-400 border-green-400/20',
-      dotColor: '#4ade80',
-      descKey: 'e1_desc',
-      achievementKeys: ['e1_a1', 'e1_a2', 'e1_a3', 'e1_a4'],
-      icon: 'ri-building-4-line',
-    },
-    {
-      id: 'e2',
-      periodKey: 'e2_period',
-      titleKey: 'e2_title',
-      institutionKey: 'e2_institution',
-      typeKey: 'e2_type',
-      typeColor: 'bg-violet-400/10 text-violet-400 border-violet-400/20',
-      dotColor: '#a78bfa',
-      descKey: 'e2_desc',
-      achievementKeys: ['e2_a1', 'e2_a2', 'e2_a3', 'e2_a4'],
-      icon: 'ri-brain-line',
-    },
-    {
-      id: 'e3',
-      periodKey: 'e3_period',
-      titleKey: 'e3_title',
-      institutionKey: 'e3_institution',
-      typeKey: 'e3_type',
-      typeColor: 'bg-amber-400/10 text-amber-400 border-amber-400/20',
-      dotColor: '#fbbf24',
-      descKey: 'e3_desc',
-      achievementKeys: ['e3_a1', 'e3_a2', 'e3_a3', 'e3_a4'],
-      icon: 'ri-computer-line',
-    },
-  ];
-
-  const { ref: titleRef, isVisible: titleVisible } = useInView();
-
-  return (
-    <section id="experiencia" className="py-24 bg-[#0c0c0e] relative overflow-hidden">
-      <div className="absolute top-0 left-0 w-96 h-96 bg-green-400/4 rounded-full blur-3xl pointer-events-none" />
-
-      <div className="max-w-6xl mx-auto px-6">
-        <div
-          ref={titleRef}
-          className="in-view mb-16"
-          style={titleVisible ? { opacity: 1, transform: 'translateY(0)' } : {}}
-        >
-          <div className="flex items-center gap-3 mb-4">
-            <span className="w-8 h-px bg-green-400" />
-            <span className="text-green-400 text-sm font-medium uppercase tracking-widest">{t('exp_label')}</span>
-          </div>
-          <h2 className="text-4xl md:text-5xl font-bold text-white">
-            <span className="gradient-text">{t('exp_title_highlight')}</span> {t('exp_title_plain')}
-          </h2>
-        </div>
-
-        <div className="relative">
-          <div className="absolute left-5 top-0 bottom-0 w-px bg-gradient-to-b from-green-400/50 via-zinc-800 to-transparent hidden md:block" />
-          <div className="space-y-8">
-            {experiences.map((exp, i) => (
-              <ExperienceCard key={exp.id} exp={exp} delay={i * 0.15} />
-            ))}
-          </div>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-interface ExperienceData {
+type Study = {
   id: string;
   periodKey: string;
   titleKey: string;
   institutionKey: string;
   typeKey: string;
-  typeColor: string;
-  dotColor: string;
   descKey: string;
   achievementKeys: string[];
-  icon: string;
-}
+  dot: string;
+};
 
-const ExperienceCard = ({ exp, delay }: { exp: ExperienceData; delay: number }) => {
+const studies: Study[] = [
+  {
+    id: 'b2',
+    periodKey: 'e_lang_period',
+    titleKey: 'path_b2_title',
+    institutionKey: 'path_b2_place',
+    typeKey: 'e_lang_type',
+    descKey: 'path_b2_detail',
+    achievementKeys: [],
+    dot: '#7c3aed',
+  },
+  {
+    id: 'asir',
+    periodKey: 'e3_period',
+    titleKey: 'e3_title',
+    institutionKey: 'e3_institution',
+    typeKey: 'e3_type',
+    descKey: 'e3_desc',
+    achievementKeys: ['e3_a1', 'e3_a2', 'e3_a3', 'e3_a4'],
+    dot: '#fbbf24',
+  },
+  {
+    id: 'bigdata',
+    periodKey: 'e2_period',
+    titleKey: 'e2_title',
+    institutionKey: 'e2_institution',
+    typeKey: 'e2_type',
+    descKey: 'e2_desc',
+    achievementKeys: ['e2_a1', 'e2_a2', 'e2_a3', 'e2_a4'],
+    dot: '#a78bfa',
+  },
+  {
+    id: 'nebrija',
+    periodKey: 'e1_period',
+    titleKey: 'e1_title',
+    institutionKey: 'e1_institution',
+    typeKey: 'e1_type',
+    descKey: 'e1_desc',
+    achievementKeys: ['e1_a1', 'e1_a2', 'e1_a3', 'e1_a4'],
+    dot: '#06b6d4',
+  },
+];
+
+const jobTasks = ['job_a1', 'job_a2', 'job_a3', 'job_a4'];
+
+const ExperienceSection = () => {
   const { t } = useTranslation();
-  const { ref, isVisible } = useInView({ threshold: 0.1 });
+  const reduced = useReducedMotion();
+  const [active, setActive] = useState(studies[studies.length - 1].id);
+  const current = studies.find((study) => study.id === active) ?? studies[studies.length - 1];
 
   return (
-    <div
-      ref={ref}
-      className="in-view"
-      style={
-        isVisible
-          ? { opacity: 1, transform: 'translateY(0)', transitionDelay: `${delay}s` }
-          : { transitionDelay: `${delay}s` }
-      }
-    >
-      <div className="flex gap-6 md:gap-8">
-        <div className="hidden md:flex flex-col items-center flex-shrink-0 pt-1">
-          <div
-            className="w-10 h-10 flex items-center justify-center rounded-full border-2 flex-shrink-0"
-            style={{ borderColor: exp.dotColor, backgroundColor: `${exp.dotColor}15` }}
-          >
-            <span
-              className="w-3 h-3 flex items-center justify-center rounded-full"
-              style={{ backgroundColor: exp.dotColor }}
-            />
-          </div>
-        </div>
+    <section id="experiencia" className="relative overflow-hidden bg-[#0a0a1a] px-6 py-24">
+      <div className="mx-auto max-w-6xl">
+        <motion.div
+          initial={reduced ? false : { opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+        >
+          <p className="mono text-sm text-[#06b6d4]">{t('exp_label')}</p>
+          <h2 className="text-depth mt-2 text-4xl font-bold md:text-5xl">
+            <span className="text-[#06b6d4]">{t('exp_title_highlight')}</span> {t('exp_title_plain')}
+          </h2>
+        </motion.div>
 
-        <div className="flex-1 bg-[#111113] rounded-xl p-6 glow-border group hover:bg-[#141416] transition-all duration-300">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3 mb-4">
-            <div className="flex items-start gap-3">
-              <div className="w-9 h-9 flex items-center justify-center bg-[#1a1a1d] rounded-lg flex-shrink-0">
-                <i className={`${exp.icon} text-green-400`} />
-              </div>
-              <div>
-                <h3 className="text-white font-bold text-[17px] leading-snug group-hover:text-green-400 transition-colors duration-200">
-                  {t(exp.titleKey)}
-                </h3>
-                <p className="text-zinc-400 text-sm mt-0.5">{t(exp.institutionKey)}</p>
+        <div className="mt-12 grid items-start gap-10 lg:grid-cols-2">
+          <div>
+            <h3 className="mono text-sm uppercase tracking-[0.18em] text-[#c4b5fd]">{t('exp_work_label')}</h3>
+            <motion.div
+              className="mt-6"
+              initial={reduced ? false : { opacity: 0, y: 28 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, amount: 0.2 }}
+            >
+              <TiltCard>
+                <article className="glass-card h-full rounded-2xl p-6">
+                  <div className="flex items-start justify-between gap-3">
+                    <div className="flex items-start gap-3">
+                      <span className="flex h-9 w-9 flex-shrink-0 items-center justify-center rounded-lg bg-[#7c3aed]/15 text-[#c4b5fd]">
+                        <i className="ri-briefcase-line text-lg" aria-hidden="true" />
+                      </span>
+                      <div>
+                        <h4 className="text-[17px] font-bold">{t('job_title')}</h4>
+                        <p className="mt-0.5 text-sm text-[#94a3b8]">{t('job_place')}</p>
+                      </div>
+                    </div>
+                    <span className="mono text-xs text-[#94a3b8]">{t('job_period')}</span>
+                  </div>
+                  <p className="mt-4 text-[15px] leading-relaxed text-[#94a3b8]">{t('job_desc')}</p>
+                  <ul className="mt-4 space-y-2">
+                    {jobTasks.map((key) => (
+                      <li key={key} className="flex items-start gap-2 text-sm text-[#e2e8f0]">
+                        <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#06b6d4]" />
+                        {t(key)}
+                      </li>
+                    ))}
+                  </ul>
+                </article>
+              </TiltCard>
+            </motion.div>
+          </div>
+
+          <div>
+            <h3 className="mono text-sm uppercase tracking-[0.18em] text-[#c4b5fd]">{t('exp_edu_label')}</h3>
+            <div className="relative mt-6">
+              <div className="timeline-rail absolute bottom-2 left-[11px] top-3 w-px bg-gradient-to-b from-[#7c3aed] via-[#3b82f6] to-[#06b6d4]" />
+              <div className="space-y-5">
+                {studies.map((study) => {
+                  const selected = study.id === current.id;
+                  return (
+                    <button key={study.id} type="button" onClick={() => setActive(study.id)} aria-pressed={selected} className="relative flex w-full gap-4 text-left">
+                      <span
+                        className={`relative z-10 mt-1 h-6 w-6 flex-shrink-0 rounded-full border-2 transition-transform ${selected ? 'scale-110' : ''}`}
+                        style={{ borderColor: study.dot, backgroundColor: selected ? study.dot : '#030014' }}
+                      />
+                      <span>
+                        <span className="mono block text-sm text-white">{t(study.periodKey)}</span>
+                        <span className={`mt-1 block text-sm font-semibold ${selected ? 'text-[#06b6d4]' : ''}`}>{t(study.titleKey)}</span>
+                        <span className="mt-1 block text-xs text-[#94a3b8]">{t(study.institutionKey)}</span>
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             </div>
-            <div className="flex items-center gap-3 flex-shrink-0 flex-wrap gap-y-2">
-              <span className={`text-xs font-medium px-3 py-1 rounded-full border whitespace-nowrap ${exp.typeColor}`}>
-                {t(exp.typeKey)}
-              </span>
-              <span className="text-zinc-600 text-xs whitespace-nowrap">{t(exp.periodKey)}</span>
-            </div>
+            <motion.div
+              key={current.id}
+              className="mt-6"
+              initial={reduced ? false : { opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <TiltCard>
+                <article className="glass-card rounded-2xl p-6">
+                  <div className="flex flex-wrap items-start justify-between gap-3">
+                    <div>
+                      <h4 className="text-[17px] font-bold">{t(current.titleKey)}</h4>
+                      <p className="mt-0.5 text-sm text-[#94a3b8]">{t(current.institutionKey)}</p>
+                    </div>
+                    <span className="rounded-full border border-[#7c3aed]/40 bg-[#7c3aed]/15 px-3 py-1 text-xs font-medium text-[#ddd6fe]">
+                      {t(current.typeKey)}
+                    </span>
+                  </div>
+                  <p className="mt-4 text-[15px] leading-relaxed text-[#94a3b8]">{t(current.descKey)}</p>
+                  {current.achievementKeys.length > 0 && (
+                    <ul className="mt-4 space-y-2">
+                      {current.achievementKeys.map((key) => (
+                        <li key={key} className="flex items-start gap-2 text-sm text-[#e2e8f0]">
+                          <span className="mt-1.5 h-1.5 w-1.5 flex-shrink-0 rounded-full bg-[#06b6d4]" />
+                          {t(key)}
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </article>
+              </TiltCard>
+            </motion.div>
           </div>
-
-          <p className="text-zinc-400 text-[15px] leading-relaxed mb-4">{t(exp.descKey)}</p>
-
-          <ul className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-            {exp.achievementKeys.map((ak) => (
-              <li key={ak} className="flex items-center gap-2 text-zinc-300 text-sm">
-                <span className="w-1.5 h-1.5 flex items-center justify-center flex-shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                </span>
-                {t(ak)}
-              </li>
-            ))}
-          </ul>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
